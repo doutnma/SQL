@@ -2,7 +2,7 @@ from tkinter import ttk
 import tkinter as tk
 import sqlite3
 
-#základ z hodiny
+#základ z hodinky
 
 #con = sqlite3.connect(":memory:")
 con = sqlite3.connect("example.db")
