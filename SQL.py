@@ -1,7 +1,7 @@
-import time
 from tkinter import ttk
 import tkinter as tk
 import sqlite3
+
 """
 #con = sqlite3.connect(":memory:")
 con = sqlite3.connect("example.db")
@@ -12,6 +12,7 @@ for row in data:
     print(row)
 con.close()
 """
+
 #registrační formulář
 window1 = tk.Tk()
 window1.geometry("100x100")
@@ -27,7 +28,7 @@ telnum= tk.StringVar()
 def Connect():
     con = sqlite3.connect("example.db")
     cur = con.cursor()
-    cur.execute("DELETE FROM uzivatele_form WHERE jmeno = 'ejhle'")
+
     #pokud chybí jakékoliv pole je registrace zamítnuta
     if jmeno.get() == "" or prijmeni.get() == "" or num.get() == "" or adress.get() == "" or telnum.get() == "":
         label_zprava.config(text="Vyplňte prosím všechna pole", fg="red")
@@ -59,7 +60,8 @@ def Connect():
         window2 = tk.Tk()
         window2.geometry("100x100")
         window2.title("Tabulka")
-        tree = ttk.Treeview(window2, column=("c1", "c2", "c3", "c4", "c5"), show='headings', height=50)
+
+        tree = ttk.Treeview(window2, column=("c1", "c2", "c3", "c4", "c5"), show='headings', height=15)
 
         tree.column("#1", anchor=tk.CENTER)
 
@@ -82,6 +84,25 @@ def Connect():
         tree.heading("#5", text="Telefonní číslo")
 
         tree.pack()
+
+        def Edit():
+            selected_item = tree.selection()[0]
+            tree.item(selected_item, text="blub", values=("foo", "bar"))
+
+        def Delete():
+            selected_item = tree.selection()
+            if selected_item:
+                x = selected_item[0]
+                tree.delete(x)
+                sql = 'DELETE FROM uzivatele_form WHERE id=?'
+                cur.execute(sql, (x,))
+                con.commit()
+
+        button_edit = tk.Button(window2, text="Úprava dat", command=Edit)
+        button_edit.pack()
+
+        button_delete = tk.Button(window2, text="Smazání dat", command=Delete)
+        button_delete.pack()
 
         #volání funkce pro zobrazená dat z databáze
         View()
