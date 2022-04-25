@@ -1,3 +1,4 @@
+import time
 from tkinter import ttk
 import tkinter as tk
 import sqlite3
@@ -26,7 +27,7 @@ telnum= tk.StringVar()
 def Connect():
     con = sqlite3.connect("example.db")
     cur = con.cursor()
-
+    cur.execute("DELETE FROM uzivatele_form WHERE jmeno = 'ejhle'")
     #pokud chybí jakékoliv pole je registrace zamítnuta
     if jmeno.get() == "" or prijmeni.get() == "" or num.get() == "" or adress.get() == "" or telnum.get() == "":
         label_zprava.config(text="Vyplňte prosím všechna pole", fg="red")
@@ -42,7 +43,6 @@ def Connect():
         num.set("")
         adress.set("")
         telnum.set("")
-        label_zprava.config(text="Úspěšná registrace!", fg="green")
 
         # funkce zobrazení dat z databáze
         def View():
